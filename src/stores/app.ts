@@ -2,6 +2,8 @@ import { defineStore } from 'pinia'
 import type { RouteLocationNormalized } from 'vue-router'
 import { useStorage } from '@vueuse/core'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+
 export interface AppState {
   // 应用基础状态
   loading: boolean
@@ -202,7 +204,7 @@ export const useAppStore = defineStore('app', {
       this.apiConnected = connected
       this.lastApiCheck = Date.now()
     },
-
+    
     // 检查API连接状态
     async checkApiConnection() {
       try {
@@ -210,7 +212,7 @@ export const useAppStore = defineStore('app', {
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 3000) // 3秒超时
 
-        const response = await fetch('/api/health', {
+        const response = await fetch('${API_BASE_URL}/api/health', {
           method: 'GET',
           signal: controller.signal
         })
@@ -237,7 +239,7 @@ export const useAppStore = defineStore('app', {
         const controller = new AbortController()
         const timeoutId = setTimeout(() => controller.abort(), 3000) // 3秒超时
 
-        const response = await fetch('/api/health', {
+        const response = await fetch('${API_BASE_URL}/api/health', {
           signal: controller.signal
         })
 
